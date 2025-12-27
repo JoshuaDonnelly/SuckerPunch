@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Index Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            margin: 0;
+            padding: 2rem;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        h1 {
+            margin-top: 0;
+        }
+        .info {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        .status {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 6px;
+            background: #e6ffed;
+            border: 1px solid #b7eb8f;
+            color: #135200;
+        }
+        code {
+            background: #f0f0f0;
+            padding: 0.15rem 0.35rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SuckerPunch – Test Index Page</h1>
+        <p class="info">
+            If you can see this page, your template is loading correctly.
+        </p>
+
+        <div class="status">
+            ✅ Template rendering OK
+        </div>
+
+        <h2>Request Info (static test)</h2>
+        <ul>
+            <li>Current time: <span id="current-time"></span></li>
+            <li>User agent: <span id="user-agent"></span></li>
+        </ul>
+
+        <h2>Simple Form Test</h2>
+        <form>
+            <label>
+                Your name:
+                <input type="text" placeholder="Jane Doe">
+            </label>
+            <button type="submit">Submit (no-op)</button>
+        </form>
+
+        <p class="info">
+            You can now wire this template up to your backend and replace static values as needed.
+        </p>
+    </div>
+
+    <script>
+        document.getElementById('current-time').textContent = new Date().toString();
+        document.getElementById('user-agent').textContent = navigator.userAgent;
+    </script>
+</body>
+</html>

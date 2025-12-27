@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}{% endblock %}</title>
+    <script src="https://cdn.pubnub.com/sdk/javascript/pubnub.10.2.0.js"></script>
+    <script src="static/js/main.js"></script>
+    <link rel="stylesheet" href="static/css/style.css">
+  </head>
+  <body>
+    <header>
+      <div class="header-left">
+        <a href="/">
+            <img src="/static/images/icon.jpg" alt="Logo" class="header-logo" />
+        </a>
+        <a href="/">Recipes</a>
+        <a href="/">New Challenges</a>
+        <a href="/">My Favourites</a>
+      </div>
+      <div class="header-right">
+        <input class="header-search" type="text" placeholder="Search..." />
+      </div>
+    </header>
+
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+  </body>
+</html>
