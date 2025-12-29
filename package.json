@@ -7,9 +7,9 @@
     "watch:css": "tailwindcss -i ./suckerpunch/static/css/input.css -o ./suckerpunch/static/css/output.css --watch"
   },
   "devDependencies": {
-    "tailwindcss": "^3.4.0",
+    "autoprefixer": "^10.4.0",
+    "livereload": "^0.10.3",
     "postcss": "^8.4.0",
-    "autoprefixer": "^10.4.0"
+    "tailwindcss": "^3.4.0"
   }
 }
-
