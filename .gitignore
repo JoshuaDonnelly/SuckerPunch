@@ -1,22 +1,11 @@
-# Python
+.env
+.env.*
+
 __pycache__/
 *.pyc
-*.pyo
-*.pyd
-*.sqlite3
 
-# Virtual environments
-venv/
-.env/
-
-# Flask
-instance/
 *.log
 
-# Node / Tailwind
-node_modules/
-suckerpunch/static/css/
+venv/
 
-# OS
-.DS_Store
-
+instance/
