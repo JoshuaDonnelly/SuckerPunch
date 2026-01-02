@@ -3,14 +3,20 @@ from dotenv import load_dotenv
 import os
 import mysql.connector
 
+load_dotenv("/var/www/suckerpunch/.env")
+
 app = Flask(
     __name__,
     static_folder="static",
     static_url_path="/static"
 )
 
+# Add PubNub config to Flask app
+app.config['PUBNUB_SUBSCRIBE_KEY'] = os.getenv("PUBNUB_SUB_KEY")
+app.config['PUBNUB_PUBLISH_KEY'] = os.getenv("PUBNUB_PUB_KEY")
 
-load_dotenv('/var/www/suckerpunch/.env')
+from .routes import api
+app.register_blueprint(api)
 
 @app.route("/")
 def index():

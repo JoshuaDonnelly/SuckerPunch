@@ -6,6 +6,15 @@
 
   <!-- Tailwind output -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/output.css') }}?v=123">
+
+  <script src="https://cdn.pubnub.com/sdk/javascript/pubnub.7.2.2.min.js"></script>
+
+  <script>
+    const PUBNUB_SUB_KEY = "{{ config['PUBNUB_SUBSCRIBE_KEY'] }}";
+  </script>
+
+  <script src="{{ url_for('static', filename='js/pubnub.js') }}"></script>
+
 </head>
 
 <body class="bg-gray-900 text-white min-h-screen">
