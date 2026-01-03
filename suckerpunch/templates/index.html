@@ -5,46 +5,69 @@
 {% block content %}
 <div class="relative h-[70vh] pt-20">
   <!-- Background image -->
-  <div class="absolute inset-0 z-0">
+  <div class="!bg-gray-600 absolute inset-0 z-0">
     <img src="{{ url_for('static', filename='images/indexBG.jpeg') }}" 
          alt="Boxing Match" 
-         class="w-full h-full object-cover opacity-30">
+         class="!bg-gray-600 w-full h-full object-cover opacity-30">
   </div>
 
-  <!-- Content -->
-  <section class="relative z-10 text-center py-20">
-    <h2 class="text-4xl font-extrabold mb-4">
-      Train Anywhere. Punch Smarter.
-    </h2>
+<!-- Content -->
+<section class="relative z-10 text-center py-20">
+  <h2 class="text-4xl font-extrabold mb-4">
+    Train Anywhere. Punch Smarter.
+  </h2>
 
-    <p class="text-lg text-gray-600 max-w-xl mx-auto mb-8">
-      Real-time shadowboxing feedback using motion detection.
-    </p>
+  <p class="text-lg text-white-600 max-w-xl mx-auto mb-8">
+    Real-time shadowboxing feedback using motion detection.
+  </p>
+  <button class="px-8 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold transition">
+    Start Workout
+  </button>
+</section>
 
-    <!-- PUNCH COUNTER -->
+</div>
+<!-- PUNCH COUNTER -->
+<section class = "relative z-10 text-center py-20">
     <div class="mb-8">
       <div class="text-6xl font-black text-red-600 mb-2" id="punch-counter">0</div>
-      <div class="text-lg text-gray-600">Punches Detected</div>
-      <div class="text-sm text-gray-500 mt-2" id="last-punch">
+      <div class="text-lg text-white-600">Punches Detected</div>
+      <div class="text-sm text-white-500 mt-2" id="last-punch">
         No punches yet
       </div>
     </div>
-
-    <button class="px-8 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold transition">
-      Start Workout
-    </button>
-  </section>
-</div>
-
-<!-- EVENT LOG -->
-<div class="max-w-2xl mx-auto px-4 pb-12">
-  <h3 class="text-xl font-bold mb-4">📋 Recent Punches</h3>
-  <div id="punch-log" class="space-y-2 max-h-60 overflow-y-auto border border-gray-200 rounded-lg p-4 bg-gray-50">
-    <div class="text-gray-500 text-center py-2">Waiting for punches...</div>
+  
+  <!-- EVENT LOG -->
+  <div class="max-w-2xl mx-auto px-4 pb-12">
+    <h3 class="text-xl font-bold mb-4">📋 Recent Punches</h3>
+    <div id="punch-log" class="space-y-2 max-h-60 overflow-y-auto border border-gray-200 rounded-lg p-4 bg-gray-50">
+      <div class="text-red-500 text-center py-2">Waiting for punches...</div>
+    </div>
   </div>
-</div>
+
+</section>
+
+<section class = "relative z-10 text-center py-20">
+  <div class="mb-8">
+    <h2 class="text-4xl font-extrabold mb-4">So, What is Sucker Punch?</h2>
+      <p class="text-lg text-white-600 max-w-xl mx-auto mb-8">
+        Sucker Punch is an assistant application for those who want to practice their boxing skills in a game like format. In other words,
+        we make shadow boxing at home fun and engaging, helping you keep fit or sharpen your uppercut!
+      </p>
+  </div>
+</section>
+
+<section class = "relative z-10 text-center py-20">
+  <div class="mb-8">
+    <h2 class="text-4xl font-extrabold mb-4">What do I need to do?</h2>
+      <p class="text-lg text-white-600 max-w-xl mx-auto mb-8">
+        Using our integrated hardware, you simply position the device 5-15 meters from yourself with the dome of the Motion Sensor facing you.
+        Then launch one of our sessions and begin shadow boxing. The site will give you feedback as you go along. Give it a try!
+      </p>
+  </div>
+</section>
 
 <script>
+
 // ALL TEMP FOR NOW JUST FOR HARDWARE TESTING
 let punchCount = 0;
 let lastPunchTime = null;

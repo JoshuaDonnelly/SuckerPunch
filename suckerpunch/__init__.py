@@ -10,6 +10,7 @@ app = Flask(
     static_folder="static",
     static_url_path="/static"
 )
+app.debug = True
 
 # Add PubNub config to Flask app
 app.config['PUBNUB_SUBSCRIBE_KEY'] = os.getenv("PUBNUB_SUB_KEY")

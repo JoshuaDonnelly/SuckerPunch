@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <title>{% block title %}SuckerPunch{% endblock %}</title>
+  <link rel ="icon" href="./static/images/icon.png">
 
   <!-- Tailwind output -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/output.css') }}?v=123">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/output.css') }}">
 
   <script src="https://cdn.pubnub.com/sdk/javascript/pubnub.7.2.2.min.js"></script>
 
@@ -17,12 +18,14 @@
 
 </head>
 
-<body class="bg-gray-900 text-white min-h-screen">
+<body class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 z-0 text-white min-h-screen">
 
   <!-- Header -->
   <header class="bg-black/40 fixed top-0 left-0 right-0 z-50 backdrop-blur border-b border-gray-800">
     <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-      <h1 class="text-xl font-bold tracking-wide">
+      
+      <h1 class="text-xl font-bold tracking-wide flex items-center gap-2">
+        <img src="{{ url_for('static', filename='images/icon.png') }}" alt="SuckerPunch Icon" class="h-8 w-8">
         SuckerPunch
       </h1>
 
@@ -38,6 +41,23 @@
   <main>
     {% block content %}{% endblock %}
   </main>
-
+  <footer class="bg-black/40 backdrop-blur">
+    <div class="flex justify-center gap-12 border-b border-gray-800 py-4 px-6">
+      <ul class="list-disc border-r border-gray-800 pr-6">
+        <li><a href="https://github.com/JoshuaDonnelly/SuckerPunch">GitHub</a></li>
+        <li>test</li>
+        <li>test</li>
+        <li>test</li>
+        <li>test</li>
+      </ul>
+      <ul class="list-disc">
+        <li>test</li>
+        <li>test</li>
+        <li>test</li>
+        <li>test</li>
+        <li>test</li>
+      </ul>
+    </div>
+  </footer>
 </body>
 </html>
