@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Workouts | SuckerPunch{% endblock %}
+
+{% block content %}
+<div class="relative h-[45vh] pt-28">
+   <h1 class="text-4xl font-extrabold mb-4 text-center">
+    Choose Your Workout Session!
+    </h1>
+    <h2 class="text-lg text-white-600 max-w-xl mx-auto mb-8 text-center">
+        Select a session below to begin training. If you're new, start with the beginner session!
+    </h2>
+</div>
+<section class="max-w-6xl mx-auto px-6 pb-16">
+  <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <!-- Card 1 -->
+    <div class="aspect-square bg-black/30 border border-white/10 rounded-xl p-5 shadow-lg flex flex-col">
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="text-xl font-semibold">Speed Shadowboxing</h3>
+        <span class="px-2 py-1 text-xs rounded bg-emerald-500/20 text-emerald-200">Beginner</span>
+      </div>
+      <p class="text-sm text-gray-200 mb-3">3 x 2-min rounds focused on quick straight punches with 45s rest.</p>
+      <div class="mt-auto space-y-3">
+        <div class="flex items-center justify-between text-sm text-gray-300">
+          <span>⏱️ 10 min</span>
+          <span>🥊 Jab/Cross</span>
+        </div>
+        <button class="w-full py-2 rounded-lg bg-gradient-to-r from-indigo-500 to-red-500 hover:border border-green-600 opacity-90 transition">
+          Start Session
+        </button>
+      </div>
+    </div>
+    <!-- Card 2 -->
+    <div class="aspect-square bg-black/30 border border-white/10 rounded-xl p-5 shadow-lg flex flex-col">
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="text-xl font-semibold">Power Combinations</h3>
+        <span class="px-2 py-1 text-xs rounded bg-amber-500/20 text-amber-200">Intermediate</span>
+      </div>
+      <p class="text-sm text-gray-200 mb-3">5 x 90s rounds mixing hooks and uppercuts with defense slips.</p>
+      <div class="mt-auto space-y-3">
+        <div class="flex items-center justify-between text-sm text-gray-300">
+          <span>⏱️ 12 min</span>
+          <span>🥊 Hooks/Uppercuts</span>
+        </div>
+        <button class="w-full py-2 rounded-lg bg-gradient-to-r from-indigo-500 to-red-500 hover:border border-green-600 opacity-90 transition">
+          Start Session
+        </button>
+      </div>
+    </div>
+    <!-- Card 3 -->
+    <div class="aspect-square bg-black/30 border border-white/10 rounded-xl p-5 shadow-lg flex flex-col">
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="text-xl font-semibold">Footwork & Defense</h3>
+        <span class="px-2 py-1 text-xs rounded bg-red-500/20 text-red-200">Advanced</span>
+      </div>
+      <p class="text-sm text-gray-200 mb-3">6 x 2-min rounds blending pivots, slips, and counterpunches.</p>
+      <div class="mt-auto space-y-3">
+        <div class="flex items-center justify-between text-sm text-gray-300">
+          <span>⏱️ 18 min</span>
+          <span>🥊 Movement</span>
+        </div>
+        <button class="w-full py-2 rounded-lg bg-gradient-to-r from-indigo-500 to-red-500 hover:border border-green-600 opacity-90 transition">
+          Start Session
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Youtube video embed-->
+<section class="max-w-6xl mx-auto px-6 pb-16">
+  <h2 class="text-3xl font-semibold mb-6 text-center">Want To Sharpen Your Technique?</h2>
+  <p class="text-1xl mb-6 text-center">Check out this video to learn the basics of proper form and technique.</p>
+  <div class="relative w-full overflow-hidden rounded-lg shadow-lg" style="padding-bottom:56.25%;">
+    <iframe
+      class="absolute inset-0 w-full h-full"
+      src="https://www.youtube-nocookie.com/embed/mLWIsSiSKzQ"
+      title="YouTube video player"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen>
+    </iframe>
+  </div>
+</section>
+{% endblock %}

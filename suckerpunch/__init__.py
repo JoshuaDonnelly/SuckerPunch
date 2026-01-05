@@ -87,6 +87,11 @@ def logout():
 def index():
     return render_template("index.html")
 
+@app.route('/sessions')
+def sessions():
+    """Our Excersise sessions """
+    return render_template("sessions.html")
+
 # Testing DB
 def get_db():
     return mysql.connector.connect(
