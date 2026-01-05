@@ -26,7 +26,7 @@
       
       <h1 class="text-xl font-bold tracking-wide flex items-center gap-2">
         <img src="{{ url_for('static', filename='images/icon.png') }}" alt="SuckerPunch Icon" class="h-8 w-8">
-        SuckerPunch
+
       </h1>
 
       <nav class="space-x-6 text-sm text-gray-300">
@@ -34,6 +34,19 @@
         <a href="/workout" class="hover:text-white transition">Workout</a>
         <a href="/stats" class="hover:text-white transition">Stats</a>
       </nav>
+      <div>
+        {% if session.user %}
+        <div class="flex items-center gap-2">
+          <a href="{{ url_for('logout') }}">
+            <img src="{{ session.user.picture }}" alt="Profile Picture" class="inline-block h-8 w-8 rounded-lg ml-2 cursor-pointer hover:opacity-80 transition">
+          </a>
+        </div>
+        {% else %}
+          <a href="{{ url_for('login') }}" class="...">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1200px-Google_%22G%22_logo.svg.png" alt="G" class = "inline-block h-8 w-8 rounded-lg ml-2 hover:border border-gray-800 transition-transform">
+          </a>
+        {% endif %}
+      </div>
     </div>
   </header>
 
