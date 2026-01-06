@@ -27,25 +27,6 @@
 </section>
 
 </div>
-<!-- PUNCH COUNTER -->
-<section class = "relative z-10 text-center py-20">
-    <div class="mb-8">
-      <div class="text-6xl font-black text-blue-600 mb-2" id="punch-counter">0</div>
-      <div class="text-lg text-white-600">Punches Detected</div>
-      <div class="text-sm text-white-500 mt-2" id="last-punch">
-        No punches yet
-      </div>
-    </div>
-  
-  <!-- EVENT LOG -->
-  <div class="max-w-2xl mx-auto px-4 pb-12">
-    <h3 class="text-xl font-bold mb-4">📋 Recent Punches</h3>
-    <div id="punch-log" class="space-y-2 max-h-60 overflow-y-auto border border-gray-200 rounded-lg p-4 bg-gray-50">
-      <div class="text-red-500 text-center py-2">Waiting for punches...</div>
-    </div>
-  </div>
-
-</section>
 
 <section class = "relative z-10 text-center py-20">
   <div class="mb-8">
@@ -66,64 +47,5 @@
       </p>
   </div>
 </section>
-
-<script>
-
-// ALL TEMP FOR NOW JUST FOR HARDWARE TESTING
-let punchCount = 0;
-let lastPunchTime = null;
-
-// This function will be called by pubnub.js
-function incrementCounter() {
-  punchCount++;
-  document.getElementById('punch-counter').textContent = punchCount;
-  
-  // Update last punch time
-  const now = new Date();
-  const timeString = now.toLocaleTimeString();
-  document.getElementById('last-punch').textContent = `Last punch: ${timeString}`;
-  lastPunchTime = now;
-  
-  // Add to log
-  addToLog(now);
-}
-
-function addToLog(timestamp) {
-  const logElement = document.getElementById('punch-log');
-  const entry = document.createElement('div');
-  
-  entry.className = 'border-l-4 border-red-500 pl-3 py-1';
-  entry.innerHTML = `
-    <div class="font-medium">🥊 Punch #${punchCount}</div>
-    <div class="text-sm text-gray-500">${timestamp.toLocaleTimeString()}</div>
-  `;
-  
-  // If it's the first entry, remove the placeholder
-  if (logElement.firstChild.textContent.includes('Waiting')) {
-    logElement.innerHTML = '';
-  }
-  
-  // Add to top
-  logElement.prepend(entry);
-  
-  // Keep only last 10 entries
-  if (logElement.children.length > 10) {
-    logElement.removeChild(logElement.lastChild);
-  }
-}
-
-// For testing without PubNub
-function simulatePunch() {
-  incrementCounter();
-}
-
-// Clear log button
-function clearLog() {
-  document.getElementById('punch-log').innerHTML = '<div class="text-gray-500 text-center py-2">Log cleared</div>';
-  punchCount = 0;
-  document.getElementById('punch-counter').textContent = '0';
-  document.getElementById('last-punch').textContent = 'No punches yet';
-}
-</script>
 
 {% endblock %}
