@@ -3,8 +3,8 @@
 {% block title %}Workouts | SuckerPunch{% endblock %}
 
 {% block content %}
-<div class="relative h-[45vh] pt-28">
-   <h1 class="text-4xl font-extrabold mb-4 text-center">
+<div class="relative h-[45vh] pt-48">
+   <h1 class="text-4xl font-extrabold mb-4 pb-2 text-center">
     Choose Your Workout Session!
     </h1>
     <h2 class="text-lg text-white-600 max-w-xl mx-auto mb-8 text-center">
@@ -25,9 +25,16 @@
           <span>⏱️ 10 min</span>
           <span>🥊 Jab/Cross</span>
         </div>
-        <button class="w-full py-2 rounded-lg bg-gradient-to-r from-indigo-500 to-red-500 hover:border border-green-600 opacity-90 transition">
-          Start Session
-        </button>
+        <!-- Speed Shadowboxing -->
+<a href="{{ url_for('shadow',
+    title='Speed Shadowboxing',
+    desc='3 x 2-min rounds focused on quick straight punches with 45s rest.',
+    duration='10 min',
+    focus='Jab/Cross'
+) }}"
+   class="inline-block w-full text-center py-2 rounded-lg bg-gradient-to-r from-blue-900 via-blue-700 to-blue-500 hover:border border-green-600 opacity-90 transition">
+  Start Session
+</a>
       </div>
     </div>
     <!-- Card 2 -->
@@ -42,9 +49,16 @@
           <span>⏱️ 12 min</span>
           <span>🥊 Hooks/Uppercuts</span>
         </div>
-        <button class="w-full py-2 rounded-lg bg-gradient-to-r from-indigo-500 to-red-500 hover:border border-green-600 opacity-90 transition">
+        <!-- Power Combinations -->
+        <a href="{{ url_for('shadow',
+            title='Power Combinations',
+            desc='5 x 90s rounds mixing hooks and uppercuts with defense slips.',
+            duration='12 min',
+            focus='Hooks/Uppercuts'
+        ) }}"
+          class="inline-block w-full text-center py-2 rounded-lg bg-gradient-to-r from-blue-900 via-blue-700 to-blue-500 hover:border border-green-600 opacity-90 transition">
           Start Session
-        </button>
+        </a>
       </div>
     </div>
     <!-- Card 3 -->
@@ -59,9 +73,16 @@
           <span>⏱️ 18 min</span>
           <span>🥊 Movement</span>
         </div>
-        <button class="w-full py-2 rounded-lg bg-gradient-to-r from-indigo-500 to-red-500 hover:border border-green-600 opacity-90 transition">
-          Start Session
-        </button>
+        <!-- Footwork & Defense -->
+        <a href="{{ url_for('shadow',
+            title='Footwork & Defense',
+            desc='6 x 2-min rounds blending pivots, slips, and counterpunches.',
+            duration='18 min',
+            focus='Movement'
+        ) }}"
+        class="inline-block w-full text-center py-2 rounded-lg bg-gradient-to-r from-blue-900 via-blue-700 to-blue-500 hover:border border-green-600 opacity-90 transition">
+        Start Session
+      </a>
       </div>
     </div>
   </div>

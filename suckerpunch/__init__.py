@@ -89,8 +89,19 @@ def index():
 
 @app.route('/sessions')
 def sessions():
-    """Our Excersise sessions """
+    """Our Excersise sessions selector """
     return render_template("sessions.html")
+
+@app.route('/shadow')
+def shadow():
+    """Our Shadow box routine page """
+    data = {
+        'title': request.args.get("title", "Shadowboxing Session"),
+        'desc': request.args.get("desc", "A focused shadowboxing routine."),
+        'duration': request.args.get("duration", "15 min"),
+        'focus': request.args.get("focus", "General Fitness")
+    }
+    return render_template("shadow.html", **data)
 
 # Testing DB
 def get_db():

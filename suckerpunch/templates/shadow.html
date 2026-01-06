@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block title %}Shadow Boxing Session | SuckerPunch{% endblock %}
+
+{% block content %}
+
+<div class="relative h-[45vh] pt-48">
+   <h1 class="text-4xl font-extrabold mb-4 pb-2 text-center">
+    {{ title }}
+    </h1>
+    <h2 class="text-lg text-white-600 max-w-xl mx-auto mb-8 text-center">
+        {{ desc }}
+    </h2>
+    <h2 class="text-lg text-white-600 max-w-xl mx-auto mb-8 text-center">
+        🥊Focus -> {{ focus }}
+    </h2>
+</div>
+<div id="session-data" data-duration="{{ duration }}" class="hidden"></div>
+
+<div class="mt-6 flex flex-col items-center gap-4">
+    <div class="flex items-center gap-4">
+        <button id="timer-minus" class="px-3 py-2 bg-gray-700 rounded text-sm">-1 min</button>
+        <div class="relative flex items-center justify-center">
+            <div class="w-40 h-40 sm:w-52 sm:h-52 rounded-full border-4 border-blue-400 bg-black/40 flex items-center justify-center shadow-lg">
+                <div id="timer-display" class="text-4xl sm:text-5xl font-mono">--:--</div>
+            </div>
+        </div>
+        <button id="timer-plus" class="px-3 py-2 bg-gray-700 rounded text-sm">+1 min</button>
+    </div>
+    <div class="pb-16 flex items-center gap-3">
+        <button id="timer-toggle" class="px-4 py-2 bg-blue-700 rounded">Start</button>
+        <button id="timer-reset" class="px-3 py-2 bg-gray-700 rounded">Reset</button>
+    </div>
+</div>
+
+<script>
+    // Basic round timer driven by the duration passed from the card
+    (function () {
+        const dataEl = document.getElementById('session-data');
+        const display = document.getElementById('timer-display');
+        const toggleBtn = document.getElementById('timer-toggle');
+        const resetBtn = document.getElementById('timer-reset');
+        const minusBtn = document.getElementById('timer-minus');
+        const plusBtn = document.getElementById('timer-plus');
+
+        const parseSeconds = (durationStr) => {
+            if (!durationStr) return 0;
+            const match = durationStr.match(/([\d.]+)\s*(min|minute|minutes)?/i);
+            if (!match) return 0;
+            const minutes = parseFloat(match[1]);
+            return Math.max(0, Math.round(minutes * 60));
+        };
+
+        let totalSeconds = parseSeconds(dataEl.dataset.duration);
+        let remaining = totalSeconds;
+        let timerId = null;
+
+        const format = (s) => {
+            const m = Math.floor(s / 60).toString().padStart(2, '0');
+            const sec = (s % 60).toString().padStart(2, '0');
+            return `${m}:${sec}`;
+        };
+
+        const render = () => {
+            display.textContent = format(remaining);
+        };
+
+        const stop = () => {
+            if (timerId !== null) {
+                clearInterval(timerId);
+                timerId = null;
+            }
+            toggleBtn.textContent = 'Start';
+        };
+
+        const tick = () => {
+            if (remaining <= 0) {
+                stop();
+                return;
+            }
+            remaining -= 1;
+            render();
+        };
+
+        toggleBtn.addEventListener('click', () => {
+            if (timerId) {
+                stop();
+                return;
+            }
+            if (remaining <= 0) remaining = totalSeconds;
+            timerId = setInterval(tick, 1000);
+            toggleBtn.textContent = 'Pause';
+        });
+
+        resetBtn.addEventListener('click', () => {
+            stop();
+            totalSeconds = parseSeconds(dataEl.dataset.duration);
+            remaining = totalSeconds;
+            render();
+        });
+
+        minusBtn.addEventListener('click', () => {
+            const delta = 60;
+            totalSeconds = Math.max(0, totalSeconds - delta);
+            remaining = Math.max(0, remaining - delta);
+            render();
+        });
+
+        plusBtn.addEventListener('click', () => {
+            const delta = 60;
+            totalSeconds += delta;
+            remaining += delta;
+            render();
+        });
+
+        render();
+    })();
+</script>
+
+{% endblock %}
