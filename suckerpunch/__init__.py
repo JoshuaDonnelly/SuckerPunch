@@ -71,6 +71,9 @@ def auth_callback():
         session['user'] = user_info
         app.logger.debug("User info stored in session successfully.")
 
+        user_id = get_or_create_user(user_info)
+        session["user_id"] = user_id
+
         return redirect(url_for('index'))
 
     except Exception as e:
@@ -103,21 +106,89 @@ def shadow():
     }
     return render_template("shadow.html", **data)
 
-# Testing DB
-def get_db():
-    return mysql.connector.connect(
-        host=os.getenv('DB_HOST'),
-        user=os.getenv('DB_USER'),
-        password=os.getenv('DB_PASSWORD'),
-        database=os.getenv('DB_NAME')
+from .db import get_db
+
+def get_or_create_user(user_info):
+    conn = get_db()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute(
+        "SELECT id FROM users WHERE google_sub = %s",
+        (user_info["sub"],)
+    )
+    user = cursor.fetchone()
+
+    if not user:
+        cursor.execute(
+            """
+            INSERT INTO users (google_sub, email, name)
+            VALUES (%s, %s, %s)
+            """,
+            (user_info["sub"], user_info["email"], user_info.get("name"))
+        )
+        conn.commit()
+        user_id = cursor.lastrowid
+    else:
+        user_id = user["id"]
+
+    cursor.close()
+    conn.close()
+    return user_id
+
+@app.route("/my-sessions")
+def my_sessions():
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    conn = get_db()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute(
+        """
+        SELECT id, title, description, focus, minutes, created_at
+        FROM shadow_sessions
+        WHERE user_id = %s
+        ORDER BY created_at DESC
+        """,
+        (session["user_id"],)
     )
 
-conn = mysql.connector.connect(
-    host=os.getenv('DB_HOST'),
-    user=os.getenv('DB_USER'),
-    password=os.getenv('DB_PASSWORD'),
-    database=os.getenv('DB_NAME')
-)
+    sessions = cursor.fetchall()
 
-print(conn.is_connected())
-conn.close()
+    cursor.close()
+    conn.close()
+
+    return render_template("my_sessions.html", sessions=sessions)
+
+@app.route("/sessions/load/<int:session_id>")
+def load_session(session_id):
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    conn = get_db()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute(
+        """
+        SELECT title, description, focus, minutes
+        FROM shadow_sessions
+        WHERE id = %s AND user_id = %s
+        """,
+        (session_id, session["user_id"])
+    )
+
+    s = cursor.fetchone()
+
+    cursor.close()
+    conn.close()
+
+    if not s:
+        return "Session not found", 404
+
+    return redirect(url_for(
+        "shadow",
+        title=s["title"],
+        desc=s["description"],
+        focus=s["focus"],
+        duration=f'{s["minutes"]} min'
+    ))

@@ -15,7 +15,14 @@
         🥊Focus -> {{ focus }}
     </h2>
 </div>
-<div id="session-data" data-duration="{{ duration }}" class="hidden"></div>
+<div
+    id="session-data"
+    data-title="{{ title }}"
+    data-desc="{{ desc }}"
+    data-focus="{{ focus }}"
+    data-duration="{{ duration }}"
+    class="hidden">
+</div>
 
 <div class="mt-6 flex flex-col items-center gap-4">
     <div class="flex items-center gap-4">
@@ -32,6 +39,22 @@
         <button id="timer-reset" class="px-3 py-2 bg-gray-700 rounded">Reset</button>
     </div>
 </div>
+{% if session.get('user') %}
+<div class="mt-8 flex justify-center">
+    <button
+        id="save-session-btn"
+        class="px-6 py-3 bg-green-600 hover:bg-green-700 transition rounded-lg font-semibold shadow-md"
+    >
+        💾 Save Session
+    </button>
+</div>
+{% else %}
+<div class="mt-8 text-center text-sm text-gray-400">
+    <a href="{{ url_for('login') }}" class="underline hover:text-blue-400">
+        Log in to save this session
+    </a>
+</div>
+{% endif %}
 <section class = "relative z-10 text-center py-20">
     <div class="mb-8">
       <div class="text-6xl font-black text-blue-600 mb-2" id="punch-counter">0</div>
@@ -51,142 +74,146 @@
 
 </section>
 <script>
-    // Basic round timer driven by the duration passed from the card
-    (function () {
-        const dataEl = document.getElementById('session-data');
-        const display = document.getElementById('timer-display');
-        const toggleBtn = document.getElementById('timer-toggle');
-        const resetBtn = document.getElementById('timer-reset');
-        const minusBtn = document.getElementById('timer-minus');
-        const plusBtn = document.getElementById('timer-plus');
 
-        const parseSeconds = (durationStr) => {
-            if (!durationStr) return 0;
-            const match = durationStr.match(/([\d.]+)\s*(min|minute|minutes)?/i);
-            if (!match) return 0;
-            const minutes = parseFloat(match[1]);
-            return Math.max(0, Math.round(minutes * 60));
-        };
+(function () {
+    const dataEl = document.getElementById('session-data');
+    const display = document.getElementById('timer-display');
+    const toggleBtn = document.getElementById('timer-toggle');
+    const resetBtn = document.getElementById('timer-reset');
+    const minusBtn = document.getElementById('timer-minus');
+    const plusBtn = document.getElementById('timer-plus');
 
-        let totalSeconds = parseSeconds(dataEl.dataset.duration);
-        let remaining = totalSeconds;
-        let timerId = null;
+    
+    const title = dataEl.dataset.title;
+    const description = dataEl.dataset.desc;
+    const focus = dataEl.dataset.focus;
 
-        const format = (s) => {
-            const m = Math.floor(s / 60).toString().padStart(2, '0');
-            const sec = (s % 60).toString().padStart(2, '0');
-            return `${m}:${sec}`;
-        };
+    const parseSeconds = (durationStr) => {
+        if (!durationStr) return 0;
+        const match = durationStr.match(/([\d.]+)\s*(min|minute|minutes)?/i);
+        if (!match) return 0;
+        return Math.round(parseFloat(match[1]) * 60);
+    };
 
-        const render = () => {
-            display.textContent = format(remaining);
-        };
+    let totalSeconds = parseSeconds(dataEl.dataset.duration);
+    let remaining = totalSeconds;
+    let timerId = null;
 
-        const stop = () => {
-            if (timerId !== null) {
-                clearInterval(timerId);
-                timerId = null;
-            }
-            toggleBtn.textContent = 'Start';
-        };
+    const format = (s) => {
+        const m = Math.floor(s / 60).toString().padStart(2, '0');
+        const sec = (s % 60).toString().padStart(2, '0');
+        return `${m}:${sec}`;
+    };
 
-        const tick = () => {
-            if (remaining <= 0) {
-                stop();
-                return;
-            }
-            remaining -= 1;
-            render();
-        };
+    const render = () => display.textContent = format(remaining);
 
-        toggleBtn.addEventListener('click', () => {
-            if (timerId) {
-                stop();
-                return;
-            }
-            if (remaining <= 0) remaining = totalSeconds;
-            timerId = setInterval(tick, 1000);
-            toggleBtn.textContent = 'Pause';
-        });
+    const stop = () => {
+        if (timerId) clearInterval(timerId);
+        timerId = null;
+        toggleBtn.textContent = 'Start';
+    };
 
-        resetBtn.addEventListener('click', () => {
-            stop();
-            totalSeconds = parseSeconds(dataEl.dataset.duration);
-            remaining = totalSeconds;
-            render();
-        });
-
-        minusBtn.addEventListener('click', () => {
-            const delta = 60;
-            totalSeconds = Math.max(0, totalSeconds - delta);
-            remaining = Math.max(0, remaining - delta);
-            render();
-        });
-
-        plusBtn.addEventListener('click', () => {
-            const delta = 60;
-            totalSeconds += delta;
-            remaining += delta;
-            render();
-        });
-
+    const tick = () => {
+        if (remaining <= 0) return stop();
+        remaining--;
         render();
-    })();
+    };
 
-    let punchCount = 0;
-    let lastPunchTime = null;
+    toggleBtn.addEventListener('click', () => {
+        if (timerId) return stop();
+        timerId = setInterval(tick, 1000);
+        toggleBtn.textContent = 'Pause';
+    });
 
-// This function will be called by pubnub.js
+    resetBtn.addEventListener('click', () => {
+        stop();
+        remaining = totalSeconds;
+        render();
+    });
+
+    minusBtn.addEventListener('click', () => {
+        totalSeconds = Math.max(0, totalSeconds - 60);
+        remaining = Math.max(0, remaining - 60);
+        render();
+    });
+
+    plusBtn.addEventListener('click', () => {
+        totalSeconds += 60;
+        remaining += 60;
+        render();
+    });
+
+    render();
+
+    // ✅ SAVE SESSION BUTTON
+    const saveBtn = document.getElementById("save-session-btn");
+    if (saveBtn) {
+        saveBtn.addEventListener("click", () => {
+            fetch("/api/sessions/save", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    title: title,
+                    description: description,
+                    focus: focus,
+                    minutes: Math.round(totalSeconds / 60)
+                })
+            })
+            .then(res => {
+                if (!res.ok) throw new Error("Save failed");
+                return res.json();
+            })
+            .then(() => alert("Session saved!"))
+            .catch(err => {
+                console.error(err);
+                alert("Save failed");
+            });
+        });
+    }
+})();
+
+
+
+/* =====================================================
+   PUNCH COUNTER (PubNub hook-ready)
+===================================================== */
+let punchCount = 0;
+
 function incrementCounter() {
-  punchCount++;
-  document.getElementById('punch-counter').textContent = punchCount;
-  
-  // Update last punch time
-  const now = new Date();
-  const timeString = now.toLocaleTimeString();
-  document.getElementById('last-punch').textContent = `Last punch: ${timeString}`;
-  lastPunchTime = now;
-  
-  // Add to log
-  addToLog(now);
+    punchCount++;
+    document.getElementById('punch-counter').textContent = punchCount;
+
+    const now = new Date();
+    document.getElementById('last-punch').textContent =
+        `Last punch: ${now.toLocaleTimeString()}`;
+
+    addToLog(now);
 }
 
 function addToLog(timestamp) {
-  const logElement = document.getElementById('punch-log');
-  const entry = document.createElement('div');
-  
-  entry.className = 'border-l-4 border-red-500 pl-3 py-1';
-  entry.innerHTML = `
-    <div class="font-medium">🥊 Punch #${punchCount}</div>
-    <div class="text-sm text-gray-500">${timestamp.toLocaleTimeString()}</div>
-  `;
-  
-  // If it's the first entry, remove the placeholder
-  if (logElement.firstChild.textContent.includes('Waiting')) {
-    logElement.innerHTML = '';
-  }
-  
-  // Add to top
-  logElement.prepend(entry);
-  
-  // Keep only last 10 entries
-  if (logElement.children.length > 10) {
-    logElement.removeChild(logElement.lastChild);
-  }
+    const log = document.getElementById('punch-log');
+    const entry = document.createElement('div');
+
+    entry.className = 'border-l-4 border-red-500 pl-3 py-1';
+    entry.innerHTML = `
+        <div class="font-medium">🥊 Punch #${punchCount}</div>
+        <div class="text-sm text-gray-500">${timestamp.toLocaleTimeString()}</div>
+    `;
+
+    if (log.firstChild?.textContent.includes('Waiting')) {
+        log.innerHTML = '';
+    }
+
+    log.prepend(entry);
+
+    if (log.children.length > 10) {
+        log.removeChild(log.lastChild);
+    }
 }
 
-// For testing without PubNub
-function simulatePunch() {
-  incrementCounter();
-}
 
-// Clear log button
-function clearLog() {
-  document.getElementById('punch-log').innerHTML = '<div class="text-gray-500 text-center py-2">Log cleared</div>';
-  punchCount = 0;
-  document.getElementById('punch-counter').textContent = '0';
-  document.getElementById('last-punch').textContent = 'No punches yet';
-}
+
 </script>
+
 
 {% endblock %}

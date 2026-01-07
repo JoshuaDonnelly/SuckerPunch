@@ -29,7 +29,9 @@
       <nav class="space-x-6 text-sm text-gray-300">
         <a href="/" class="hover:text-white transition">Home</a>
         <a href="/sessions" class="hover:text-white transition">Workout</a>
-        <a href="/stats" class="hover:text-white transition">Stats</a>
+        {% if session.get("user") %}
+    <a href="{{ url_for('my_sessions') }}">My Sessions</a>
+  {% endif %}
       </nav>
       <div>
         {% if session.user %}

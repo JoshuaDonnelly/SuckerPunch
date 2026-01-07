@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}My Sessions{% endblock %}
+
+{% block content %}
+<h1 class="text-3xl font-bold mb-6 text-center">My Shadowboxing Sessions</h1>
+
+{% if sessions %}
+  <div class="max-w-3xl mx-auto space-y-4">
+    {% for s in sessions %}
+      <div class="p-4 border rounded-lg shadow bg-gray-800">
+        <h2 class="text-xl font-semibold">{{ s.title }}</h2>
+        <p class="text-gray-400">{{ s.description }}</p>
+
+        <div class="mt-2 text-sm text-gray-500">
+          🥊 {{ s.focus }} · ⏱ {{ s.minutes }} min
+        </div>
+
+        <div class="text-xs text-gray-600 mt-1">
+          Saved on {{ s.created_at.strftime("%d %b %Y, %H:%M") }}
+        </div>
+
+        <form action="{{ url_for('load_session', session_id=s.id) }}" method="get">
+        <button
+            class="mt-3 px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded text-sm"
+        >
+            ▶ Load Session
+        </button>
+        </form>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p class="text-center text-gray-500">No sessions saved yet.</p>
+{% endif %}
+{% endblock %}
